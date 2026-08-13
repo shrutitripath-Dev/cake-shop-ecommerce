@@ -49,7 +49,7 @@ function Re() {
 
       if (res.ok) {
         showMessage("Registered successfully ✅", "successful");
-        navigate('/login');
+        navigate('/mylogin');
       } else {
         showMessage(data.message || "Registration failed: ", "error");
       }
