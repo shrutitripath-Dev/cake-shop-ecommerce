@@ -17,6 +17,31 @@ function Re() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = async () => {
+
+    if (!name.trim()) {
+      showMessage("Name is required", "error");
+      return;
+    }
+
+    if (!email.endsWith("@gmail.com")) {
+      showMessage("Only Gmail allowed", "error");
+      return;
+    }
+
+    if (password.length < 6) {
+      showMessage("Password must be at least 6 characters", "error");
+      return;
+    }
+
+    if (!/^[0-9]{10}$/.test(number)) {
+      showMessage("Phone must be 10 digits", "error");
+      return;
+    }
+
+    if (!contry.trim()) {
+      showMessage("Country is required", "error");
+      return;
+    }
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
         method: "POST",
@@ -32,20 +57,7 @@ function Re() {
         })
       });
 
-
-
       const data = await res.text();
-      // console.log(data);
-
-      if (!email.endsWith("@gmail.com")) {
-        showMessage("Only Gmail allowed ", "error");
-        return;
-      }
-
-      if (!/^[0-9]{10}$/.test(number)) {
-        showMessage("Phone must be 10 digits ", "error");
-        return;
-      }
 
       if (res.ok) {
         showMessage("Registered successfully ✅", "successful");
