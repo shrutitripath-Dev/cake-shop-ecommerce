@@ -2,10 +2,10 @@ import { useState } from "react";
 import { supabase, useAuth } from "./Info.jsx";
 import Navbar from "./nav.jsx"
 import "./App.css";
-import {useMessage} from "./mess.jsx";
+import { useMessage } from "./mess.jsx";
 import { useNavigate } from "react-router-dom";
 
-function Checkout({ cart, totalP , setCart}) {
+function Checkout({ cart, totalP, setCart }) {
   const { user } = useAuth();
   const { showMessage } = useMessage();
 
@@ -19,18 +19,18 @@ function Checkout({ cart, totalP , setCart}) {
     e.preventDefault();
 
     if (!user) {
-      showMessage("Please login first","error");
+      showMessage("Please login first", "error");
       return;
     }
 
     if (!name || !phone || !address) {
-      showMessage("Please fill all delivery details ","error");
+      showMessage("Please fill all delivery details ", "error");
 
       return;
     }
 
     if (cart.length === 0) {
-      showMessage("Your cart is empty ","error");
+      showMessage("Your cart is empty ", "error");
       return;
     }
 
@@ -53,16 +53,17 @@ function Checkout({ cart, totalP , setCart}) {
       .single();
 
     setLoading(false);
-
+    if (!/^[0-9]{10}$/.test(phone)) {
+      showMessage("Phone must be 10 digits ", "error");
+      return;
+    }
     if (error) {
-      
-      showMessage("Order failed "+error.message," error");
+
+      showMessage(error.message || "Order failed ", " error");
 
       return;
     }
-
-    // console.log("Order created:", data);
-    showMessage("Order placed successfully!","successfuly");
+    showMessage("Order placed successfully!", "successfuly");
 
     setCart([]);
     navi("/bill", { state: { order: data } });
@@ -70,111 +71,111 @@ function Checkout({ cart, totalP , setCart}) {
 
   return (
     <>
-    <Navbar/>
-    <div className="checkout">
-      
+      <Navbar />
+      <div className="checkout">
 
-      <h1>Delivery</h1>
 
-      <form onSubmit={placeOrder}>
+        <h1>Delivery</h1>
 
-        <div className="checkout-box">
+        <form onSubmit={placeOrder}>
 
-          {/* Delivery */}
-          <div className="delivery">
-            <h2>📍 Delivery Details</h2>
+          <div className="checkout-box">
 
-            <label>Name</label>
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={name}
-              
-              onChange={(e) => setName(e.target.value)}
-            />
+            {/* Delivery */}
+            <div className="delivery">
+              <h2>📍 Delivery Details</h2>
 
-            <label>Phone Number</label>
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-
-            <label>Address</label>
-            <textarea
-              placeholder="Delivery Address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-
-            <h2>💳 Payment Method</h2>
-
-            <label className="pay">
+              <label>Name</label>
               <input
-                type="radio"
-                value="COD"
-                checked={paymentMethod === "COD"}
-                onChange={(e) =>
-                  setPaymentMethod(e.target.value)
-                }
-              />
-              Cash on Delivery
-            </label>
+                type="text"
+                placeholder="Full Name"
+                value={name}
 
-            <label className="pay">
+                onChange={(e) => setName(e.target.value)}
+              />
+
+              <label>Phone Number</label>
               <input
-                type="radio"
-                value="TEST"
-                checked={paymentMethod === "TEST"}
-                onChange={(e) =>
-                  setPaymentMethod(e.target.value)
-                }
+                type="tel"
+                placeholder="Phone Number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
               />
-              Test Payment
-            </label>
-          </div>
 
-          {/* Order */}
-          <div className="summary">
+              <label>Address</label>
+              <textarea
+                placeholder="Delivery Address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
 
-            <h2>🛒 Order Summary</h2>
+              <h2>💳 Payment Method</h2>
 
-            {cart.map((item) => (
-              <div className="item" key={item.id}>
-                <span>
-                  {item.name} × {item.quantity}
-                </span>
+              <label className="pay">
+                <input
+                  type="radio"
+                  value="COD"
+                  checked={paymentMethod === "COD"}
+                  onChange={(e) =>
+                    setPaymentMethod(e.target.value)
+                  }
+                />
+                Cash on Delivery
+              </label>
 
-                <b>
-                  ₹{Number(item.price * item.quantity).toFixed(2)}
-                </b>
-              </div>
-            ))}
-
-            <hr />
-
-            <div className="total">
-              <span>Total</span>
-              <b>₹{Number(totalP).toFixed(2)}</b>
+              <label className="pay">
+                <input
+                  type="radio"
+                  value="TEST"
+                  checked={paymentMethod === "TEST"}
+                  onChange={(e) =>
+                    setPaymentMethod(e.target.value)
+                  }
+                />
+                Test Payment
+              </label>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-            >
-              {loading
-                ? "Processing..."
-                : `Place Order • ₹${Number(totalP).toFixed(2)}`}
-            </button>
+            {/* Order */}
+            <div className="summary">
+
+              <h2>🛒 Order Summary</h2>
+
+              {cart.map((item) => (
+                <div className="item" key={item.id}>
+                  <span>
+                    {item.name} × {item.quantity}
+                  </span>
+
+                  <b>
+                    ₹{Number(item.price * item.quantity).toFixed(2)}
+                  </b>
+                </div>
+              ))}
+
+              <hr />
+
+              <div className="total">
+                <span>Total</span>
+                <b>₹{Number(totalP).toFixed(2)}</b>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+              >
+                {loading
+                  ? "Processing..."
+                  : `Place Order • ₹${Number(totalP).toFixed(2)}`}
+              </button>
+
+            </div>
 
           </div>
 
-        </div>
+        </form>
 
-      </form>
-
-    </div>
+      </div>
     </>
   );
 }

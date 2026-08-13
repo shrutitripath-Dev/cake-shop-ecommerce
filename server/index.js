@@ -62,7 +62,7 @@ app.post("/forgot", async (req, res) => {
   const { email } = req.body;
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "http://localhost:5173/reset",
+    redirectTo: "https://merry-klepon-f6858c.netlify.app/reset",
   });
 
   if (error) {

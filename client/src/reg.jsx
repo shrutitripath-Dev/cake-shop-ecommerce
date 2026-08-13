@@ -2,7 +2,7 @@ import './App.css'
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import {useMessage} from "./mess.jsx";
+import { useMessage } from "./mess.jsx";
 
 
 function Re() {
@@ -38,21 +38,25 @@ function Re() {
       // console.log(data);
 
       if (!email.endsWith("@gmail.com")) {
-        showMessage("Only Gmail allowed ","error");
+        showMessage("Only Gmail allowed ", "error");
+        return;
       }
 
-      if (number.length !== 10) {
-        showMessage("Phone must be 10 digits ","error");
+      if (!/^[0-9]{10}$/.test(number)) {
+        showMessage("Phone must be 10 digits ", "error");
+        return;
       }
 
       if (res.ok) {
-        showMessage("Registered successfully ✅","successful");
+        showMessage("Registered successfully ✅", "successful");
+        navigate('/login');
       } else {
-        showMessage("Registration failed: " + data.message , "error");
+        showMessage(data.message || "Registration failed: ", "error");
       }
 
     } catch (err) {
       console.error("Error:", err);
+      showMessage("Something went wrong. Please try again.", "error");
     }
 
 
@@ -84,7 +88,7 @@ function Re() {
         <div className="inputGroup">
           <input
             type="text"
-            placeholder="Contry"
+            placeholder="Country"
             value={contry}
             onChange={(e) => setContry(e.target.value)}
           />
