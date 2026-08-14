@@ -33,11 +33,6 @@ export default function Navbar({ showCart, setShowCart } = {}) {
       </button>
 
       <nav className={`navbar-links ${showMenu ? "open" : ""}`}>
-        <a href="/" onClick={(e) => { e.preventDefault(); goTo("/"); }}>Home</a>
-        <a href="/about" onClick={(e) => { e.preventDefault(); goTo("/about"); }}>About</a>
-        <a href="/wish" onClick={(e) => { e.preventDefault(); goTo("/wish"); }}>Wish List</a>
-        <a href="/orders" onClick={(e) => { e.preventDefault(); goTo("/orders"); }}>Order History</a>
-
         {user ? (
           <div className="accountExi">
             <button className='accBut' onClick={() => goTo("/me")}>
@@ -49,6 +44,12 @@ export default function Navbar({ showCart, setShowCart } = {}) {
             <img src='/img/log.png' alt='log img' />
           </button>
         )}
+        <a href="/" onClick={(e) => { e.preventDefault(); goTo("/"); }}>Home</a>
+        <a href="/about" onClick={(e) => { e.preventDefault(); goTo("/about"); }}>About</a>
+        <a href="/wish" onClick={(e) => { e.preventDefault(); goTo("/wish"); }}>Wish List</a>
+        <a href="/orders" onClick={(e) => { e.preventDefault(); goTo("/orders"); }}>Order History</a>
+
+        
 
         <button className="cartB" onClick={() => goTo("/mycart")}>
           <img src='/img/cart.png' alt='cartImpg' />
