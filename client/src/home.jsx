@@ -22,7 +22,7 @@ function HomeP({ addtoC, wishlist, toggleWish }) {
     return (
 
         <div className="mainLayout">
-            <h1 className='d1'>🍰 My Cake Shop</h1>
+            <h4 className='d1'>🍰 My Cake Shop</h4>
             <div className='d2'>
                 {products.map((product) => {
                     const isWished = wishlist.some(
