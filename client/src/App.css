@@ -498,6 +498,7 @@ body {
    NAVBAR
 ========================= */
 
+
 .navbar {
   position: sticky;
   top: 0;
@@ -506,14 +507,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  padding: 16px 32px;
+  padding: 16px 24px;
 
   background: #4a302d;
 
   color: #fff8f5;
 
   font-family: sans-serif;
+
+  overflow: visible; /* dropdown menu ko cut hone se rokta hai */
 }
 
 .navbar-links {
@@ -557,6 +559,7 @@ body {
   font-weight: 700;
 
   color: #fff8f5;
+  white-space: nowrap;
 }
 
 .navbar-login:hover {
@@ -564,7 +567,64 @@ body {
   color: #4a302d;
 }
 
+/* Hamburger button*/
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff8f5;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
 
+/* =========================
+   MOBILE VIEW (768px se chhoti screens)
+========================= */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+  }
+
+  .navbar-toggle {
+    display: block; /* hamburger icon sirf mobile pe dikhega */
+  }
+
+  .navbar-links {
+    display: none; /* default hidden, JS 'open' class se toggle hoga */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    background: #4a302d;
+    padding: 16px 24px;
+
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .navbar-links.open {
+    display: flex; /* menu open hone pe dikhega */
+  }
+
+  .navbar-links a {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 1rem;
+  }
+
+  .cartB img,
+  .accBut img,
+  .loginB img {
+    width: 24px;
+    height: 24px;
+  }
+}
 /* =========================
    PROFILE
 ========================= */
